@@ -1,7 +1,11 @@
 import React from 'react'
 
 const WHATSAPP_GROUP = 'https://chat.whatsapp.com/Ljh9PDnfrDe8jYpJ8YKj26?s=sh&p=a&mlu=4'
-const CONTACT_ADMIN = 'https://wa.me/919876543210?text=Hi%20admin%2C%20I%20just%20registered%20for%20the%20SIH%20team.'
+
+const ADMINS = [
+  { label: 'Admin 1', phone: '8484880429', wa: 'https://wa.me/918484880429?text=Hi%20admin%2C%20I%20just%20registered%20for%20the%20SIH%20team.' },
+  { label: 'Admin 2', phone: '8108109246', wa: 'https://wa.me/918108109246?text=Hi%20admin%2C%20I%20just%20registered%20for%20the%20SIH%20team.' },
+]
 
 export default function SuccessScreen({ result, onRestart }) {
   return (
@@ -16,7 +20,11 @@ export default function SuccessScreen({ result, onRestart }) {
 
       <div className="success-actions">
         <a className="wa-btn" href={WHATSAPP_GROUP} target="_blank" rel="noreferrer">Join WhatsApp Group →</a>
-        <a className="btn-ghost" href={CONTACT_ADMIN} target="_blank" rel="noreferrer">Contact Admin Now →</a>
+        {ADMINS.map((a) => (
+          <a className="btn-ghost" key={a.phone} href={a.wa} target="_blank" rel="noreferrer">
+            {a.label} ({a.phone}) →
+          </a>
+        ))}
         <button className="btn-ghost" onClick={onRestart}>Submit another entry</button>
       </div>
     </div>

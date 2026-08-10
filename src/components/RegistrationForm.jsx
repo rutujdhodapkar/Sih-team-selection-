@@ -273,6 +273,13 @@ export default function RegistrationForm({ onSuccess }) {
         </p>
         <a className="wa-btn" href={WHATSAPP_GROUP} target="_blank" rel="noreferrer">Join WhatsApp Group →</a>
       </div>
+      <div className="whatsapp-banner">
+        <p>
+          <b>Or reach an admin directly.</b> Ping us on WhatsApp and we&apos;ll sort it out immediately.
+        </p>
+        <a className="wa-btn" href="https://wa.me/918484880429" target="_blank" rel="noreferrer">Admin 1 — 8484880429 →</a>
+        <a className="wa-btn" href="https://wa.me/918108109246" target="_blank" rel="noreferrer">Admin 2 — 8108109246 →</a>
+      </div>
     </>
   )
 }
