@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIH // Registration</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+  :root{
+    --bg:#0a0d0a;
+    --panel:#10140f;
+    --line:#1f2b1c;
+    --ink:#e8f5e0;
+    --dim:#7a8f74;
+    --signal:#9dff5c;
+    --signal-dim:#5a9c3a;
+    --warn:#ff5c5c;
+    --mono:'JetBrains Mono', monospace;
+    --disp:'Space Grotesk', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--mono);
+    min-height:100vh;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:36px 36px;
+    background-position:-1px -1px;
+  }
+  .scan{
+    position:fixed; inset:0; pointer-events:none; z-index:50;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,0.12) 0px, rgba(0,0,0,0.12) 1px, transparent 1px, transparent 3px);
+    mix-blend-mode:overlay; opacity:0.35;
+  }
+  .wrap{max-width:920px; margin:0 auto; padding:48px 20px 100px;}
+
+  .topline{
+    display:flex; justify-content:space-between; align-items:center;
+    font-size:11px; letter-spacing:0.12em; color:var(--dim); text-transform:uppercase;
+    border-bottom:1px solid var(--line); padding-bottom:14px; margin-bottom:36px;
+  }
+  .topline .blink{color:var(--signal); animation:blink 1.4s steps(1) infinite;}
+  @keyframes blink{50%{opacity:0.15;}}
+
+  header.hero{margin-bottom:44px;}
+  .eyebrow{
+    display:inline-block; font-size:11px; letter-spacing:0.2em; color:var(--signal);
+    border:1px solid var(--signal-dim); padding:4px 10px; margin-bottom:18px; text-transform:uppercase;
+  }
+  h1{
+    font-family:var(--disp); font-weight:700; font-size:clamp(34px,6vw,58px);
+    line-height:1.02; margin:0 0 14px; letter-spacing:-0.01em;
+  }
+  h1 span{color:var(--signal);}
+  .sub{color:var(--dim); font-size:14.5px; max-width:56ch; line-height:1.6;}
+
+  .badge-row{
+    display:flex; gap:14px; margin-top:26px; flex-wrap:wrap;
+  }
+  .badge{
+    border:1px dashed var(--line); padding:8px 12px; font-size:11px; color:var(--dim);
+    display:flex; gap:8px; align-items:center;
+  }
+  .badge b{color:var(--ink); font-weight:500;}
+
+  form{
+    border:1px solid var(--line); background:var(--panel); padding:0;
+  }
+  .section{
+    border-bottom:1px solid var(--line); padding:26px 28px;
+  }
+  .section:last-of-type{border-bottom:none;}
+  .section-head{
+    display:flex; align-items:baseline; gap:10px; margin-bottom:20px;
+  }
+  .section-num{
+    font-size:11px; color:var(--signal); border:1px solid var(--signal-dim);
+    width:22px; height:22px; display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+  .section-title{
+    font-family:var(--disp); font-size:16px; font-weight:600; letter-spacing:0.01em;
+  }
+  .section-hint{font-size:11.5px; color:var(--dim); margin-left:auto; text-align:right;}
+
+  .grid{display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+  @media (max-width:640px){.grid{grid-template-columns:1fr;}}
+
+  label{
+    display:block; font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--dim); margin-bottom:8px;
+  }
+  label .req{color:var(--warn); margin-left:3px;}
+
+  input[type=text], input[type=email], select{
+    width:100%; background:#0d110c; border:1px solid var(--line); color:var(--ink);
+    font-family:var(--mono); font-size:14.5px; padding:11px 12px; outline:none;
+    transition:border-color .15s;
+  }
+  input::placeholder{color:#4a5a45;}
+  input:focus, select:focus{border-color:var(--signal-dim);}
+  select{appearance:none; -webkit-appearance:none; cursor:pointer;
+    background-image:linear-gradient(45deg, transparent 50%, var(--dim) 50%), linear-gradient(135deg, var(--dim) 50%, transparent 50%);
+    background-position:calc(100% - 18px) center, calc(100% - 13px) center;
+    background-size:5px 5px, 5px 5px; background-repeat:no-repeat;
+  }
+  .field{margin-bottom:0;}
+
+  .lang-row{
+    display:grid; grid-template-columns:1fr 1fr auto; gap:10px; margin-bottom:10px; align-items:end;
+  }
+  @media (max-width:640px){.lang-row{grid-template-columns:1fr; }}
+  .rm-btn{
+    background:none; border:1px solid var(--line); color:var(--dim); font-family:var(--mono);
+    font-size:11px; padding:11px 12px; cursor:pointer; height:44px;
+  }
+  .rm-btn:hover{border-color:var(--warn); color:var(--warn);}
+  .add-btn{
+    background:none; border:1px dashed var(--signal-dim); color:var(--signal);
+    font-family:var(--mono); font-size:12px; padding:9px 14px; cursor:pointer;
+    letter-spacing:0.05em; margin-top:4px;
+  }
+  .add-btn:hover{background:rgba(157,255,92,0.06);}
+
+  .skills-tags{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;}
+  .skill-chip{
+    border:1px solid var(--line); font-size:11.5px; padding:6px 10px; color:var(--dim);
+    cursor:pointer; user-select:none; transition:all .12s;
+  }
+  .skill-chip.on{border-color:var(--signal); color:var(--signal); background:rgba(157,255,92,0.06);}
+
+  .footer-bar{
+    display:flex; justify-content:space-between; align-items:center; padding:24px 28px;
+    background:#0c0f0b;
+  }
+  .id-preview{font-size:11px; color:var(--dim);}
+  .id-preview b{color:var(--signal); font-weight:500;}
+  button.submit{
+    background:var(--signal); color:#08110a; border:none; font-family:var(--mono);
+    font-weight:700; font-size:13px; letter-spacing:0.08em; padding:14px 28px; cursor:pointer;
+    text-transform:uppercase; transition:transform .1s, box-shadow .15s;
+  }
+  button.submit:hover{box-shadow:0 0 0 3px rgba(157,255,92,0.15);}
+  button.submit:active{transform:translateY(1px);}
+  button.submit:disabled{opacity:0.5; cursor:wait;}
+
+  .status{
+    margin-top:18px; font-size:12.5px; padding:12px 14px; border:1px solid var(--line); display:none;
+  }
+  .status.ok{display:block; border-color:var(--signal-dim); color:var(--signal);}
+  .status.err{display:block; border-color:var(--warn); color:var(--warn);}
+
+  .req-note{font-size:11px; color:var(--dim); margin-top:6px;}
+</style>
+</head>
+<body>
+<div class="scan"></div>
+<div class="wrap">
+
+  <div class="topline">
+    <span>SMART INDIA HACKATHON <span class="blink">●</span> REG-2026</span>
+    <span id="clock">00:00:00</span>
+  </div>
+
+  <header class="hero">
+    <span class="eyebrow">Participant Intake // Form 01</span>
+    <h1>Register for<br><span>SIH</span> — before the clock runs out.</h1>
+    <p class="sub">One form, no fluff. Fill it straight, submit it once. Your entry gets logged directly to the event database the moment you hit send.</p>
+    <div class="badge-row">
+      <div class="badge">STATUS <b>OPEN</b></div>
+      <div class="badge">FIELDS <b>6</b></div>
+      <div class="badge">TIME <b>~2 MIN</b></div>
+    </div>
+  </header>
+
+  <form id="regForm">
+    <div class="section">
+      <div class="section-head">
+        <div class="section-num">01</div>
+        <div class="section-title">Identity</div>
+        <div class="section-hint">Who's showing up</div>
+      </div>
+      <div class="grid">
+        <div class="field">
+          <label>Full Name<span class="req">*</span></label>
+          <input type="text" id="name" placeholder="e.g. Rutuj Dhodapkar" required>
+        </div>
+        <div class="field">
+          <label>Department<span class="req">*</span></label>
+          <select id="department" required>
+            <option value="" disabled selected>Select department</option>
+            <option>Computer Science & Engineering</option>
+            <option>Information Technology</option>
+            <option>AI & Machine Learning</option>
+            <option>Electronics & Telecommunication</option>
+            <option>Electrical Engineering</option>
+            <option>Mechanical Engineering</option>
+            <option>Civil Engineering</option>
+            <option value="__other">Other — specify</option>
+          </select>
+          <input type="text" id="departmentOther" placeholder="Type your department" style="margin-top:10px; display:none;">
+        </div>
+        <div class="field">
+          <label>Year of Study<span class="req">*</span></label>
+          <select id="year" required>
+            <option value="" disabled selected>Select year</option>
+            <option>1st Year</option>
+            <option>2nd Year</option>
+            <option>3rd Year</option>
+            <option>4th Year</option>
+            <option>Postgraduate</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Hackathons Attended<span class="req">*</span></label>
+          <select id="experience" required>
+            <option value="" disabled selected>Select count</option>
+            <option value="0">0 — first timer</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="__other">Other — specify</option>
+          </select>
+          <input type="text" id="experienceOther" inputmode="numeric" placeholder="Enter number" style="margin-top:10px; display:none;">
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <div class="section-num">02</div>
+        <div class="section-title">Expertise</div>
+        <div class="section-hint">Where you actually contribute</div>
+      </div>
+      <label>Pick every area that fits — no modesty</label>
+      <div class="skills-tags" id="skillTags">
+        <div class="skill-chip">Frontend</div>
+        <div class="skill-chip">Backend</div>
+        <div class="skill-chip">Mobile</div>
+        <div class="skill-chip">AI / ML</div>
+        <div class="skill-chip">Data Science</div>
+        <div class="skill-chip">UI / UX</div>
+        <div class="skill-chip">DevOps</div>
+        <div class="skill-chip">Blockchain</div>
+        <div class="skill-chip">Cybersecurity</div>
+        <div class="skill-chip">Embedded / IoT</div>
+        <div class="skill-chip">Pitching / Business</div>
+      </div>
+      <div class="req-note">At least one, or this section flags on submit.</div>
+    </div>
+
+    <div class="section">
+      <div class="section-head">
+        <div class="section-num">03</div>
+        <div class="section-title">Languages</div>
+        <div class="section-hint">Spoken / written, with honest levels</div>
+      </div>
+      <div id="langList"></div>
+      <button type="button" class="add-btn" id="addLang">+ ADD LANGUAGE</button>
+    </div>
+
+    <div class="footer-bar">
+      <div class="id-preview">Double-check before you send — one shot per entry</div>
+      <button type="submit" class="submit" id="submitBtn">Submit Entry →</button>
+    </div>
+  </form>
+
+  <div class="status" id="statusBox"></div>
+</div>
+
+<script>
+const DB_URL = "https://open-message-994d9-default-rtdb.europe-west1.firebasedatabase.app";
+
+// clock
+function tick(){
+  const d = new Date();
+  document.getElementById('clock').textContent = d.toTimeString().slice(0,8);
+}
+tick(); setInterval(tick, 1000);
+
+// skill chips
+const chips = document.querySelectorAll('.skill-chip');
+chips.forEach(c => c.addEventListener('click', () => c.classList.toggle('on')));
+
+// department "other"
+const deptSelect = document.getElementById('department');
+const deptOther = document.getElementById('departmentOther');
+deptSelect.addEventListener('change', () => {
+  const isOther = deptSelect.value === '__other';
+  deptOther.style.display = isOther ? 'block' : 'none';
+  if(isOther) deptOther.focus();
+});
+
+// experience "other"
+const expSelect = document.getElementById('experience');
+const expOther = document.getElementById('experienceOther');
+expSelect.addEventListener('change', () => {
+  const isOther = expSelect.value === '__other';
+  expOther.style.display = isOther ? 'block' : 'none';
+  if(isOther) expOther.focus();
+});
+
+// language rows
+const langList = document.getElementById('langList');
+const LEVELS = ["Fluent", "Professional", "Intermediate", "Basic"];
+let langCount = 0;
+
+function addLangRow(prefillLang){
+  langCount++;
+  const row = document.createElement('div');
+  row.className = 'lang-row';
+  row.dataset.id = langCount;
+  row.innerHTML = `
+    <div class="field">
+      <label>Language</label>
+      <input type="text" class="lang-name" placeholder="e.g. English" value="${prefillLang || ''}">
+    </div>
+    <div class="field">
+      <label>Level</label>
+      <select class="lang-level">
+        ${LEVELS.map(l => `<option>${l}</option>`).join('')}
+      </select>
+    </div>
+    <button type="button" class="rm-btn">✕</button>
+  `;
+  row.querySelector('.rm-btn').addEventListener('click', () => {
+    if(langList.children.length > 1){ row.remove(); } else {
+      row.querySelector('.lang-name').value = '';
+    }
+  });
+  langList.appendChild(row);
+}
+addLangRow('English');
+document.getElementById('addLang').addEventListener('click', () => addLangRow());
+
+// submit
+const form = document.getElementById('regForm');
+const statusBox = document.getElementById('statusBox');
+const submitBtn = document.getElementById('submitBtn');
+
+function showStatus(msg, ok){
+  statusBox.textContent = msg;
+  statusBox.className = 'status ' + (ok ? 'ok' : 'err');
+}
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const name = document.getElementById('name').value.trim();
+
+  let department = deptSelect.value;
+  if(department === '__other'){
+    department = deptOther.value.trim();
+  }
+
+  const year = document.getElementById('year').value;
+
+  let experienceRaw = expSelect.value;
+  if(experienceRaw === '__other'){
+    experienceRaw = expOther.value.trim();
+  }
+
+  const expertise = Array.from(document.querySelectorAll('.skill-chip.on')).map(c => c.textContent);
+  if(expertise.length === 0){
+    showStatus('Pick at least one expertise area. Nobody has zero skills.', false);
+    return;
+  }
+
+  const languages = Array.from(langList.querySelectorAll('.lang-row')).map(row => ({
+    language: row.querySelector('.lang-name').value.trim(),
+    level: row.querySelector('.lang-level').value
+  })).filter(l => l.language.length > 0);
+
+  if(languages.length === 0){
+    showStatus('At least one language, please.', false);
+    return;
+  }
+
+  if(!name || !department || !year || experienceRaw === ''){
+    showStatus('Fill every required field before submitting.', false);
+    return;
+  }
+
+  const experienceIsNumber = /^\d+$/.test(experienceRaw);
+
+  const payload = {
+    name, department, year,
+    hackathonExperience: experienceIsNumber ? Number(experienceRaw) : experienceRaw,
+    expertise, languages,
+    submittedAt: new Date().toISOString()
+  };
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Sending...';
+  showStatus('Writing to database…', true);
+
+  try{
+    const res = await fetch(`${DB_URL}/registrations.json`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if(!res.ok){
+      throw new Error(`DB rejected the write (HTTP ${res.status}). Check Firebase rules.`);
+    }
+
+    const data = await res.json();
+
+    if(!data || !data.name){
+      throw new Error('No confirmation ID returned — write may not have saved.');
+    }
+
+    // verify the record actually exists at that key
+    const verifyRes = await fetch(`${DB_URL}/registrations/${data.name}.json`);
+    const verifyData = await verifyRes.json();
+    if(!verifyRes.ok || !verifyData){
+      throw new Error('Write sent, but could not verify it landed in the database.');
+    }
+
+    showStatus(`✔ SAVED TO FIREBASE — Record ID: ${data.name} · ${name} is registered.`, true);
+    form.reset();
+    chips.forEach(c => c.classList.remove('on'));
+    deptOther.style.display = 'none';
+    expOther.style.display = 'none';
+    langList.innerHTML = '';
+    addLangRow('English');
+  } catch(err){
+    showStatus('✕ NOT SAVED — ' + err.message, false);
+  } finally{
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Submit Entry →';
+  }
+});
+</script>
+</body>
+</html>
+
