@@ -138,7 +138,6 @@ export default function RegistrationForm({ onSuccess }) {
                 <option>Male</option>
                 <option>Other</option>
               </select>
-              <div className="req-note">We need exactly 1 girl + 1 boy for this slot.</div>
             </div>
             <div className="field">
               <label>Email<span className="req">*</span></label>
@@ -269,7 +268,6 @@ export default function RegistrationForm({ onSuccess }) {
         </div>
 
         <div className="footer-bar">
-          <div className="id-preview">1 girl + 1 boy — <b>first come, first in</b></div>
           <button type="submit" className="submit" disabled={sending}>
             {sending ? 'Sending…' : 'Submit Entry →'}
           </button>
