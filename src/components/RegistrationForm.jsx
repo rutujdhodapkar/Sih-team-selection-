@@ -15,20 +15,6 @@ const DEPARTMENTS = [
 
 const YEARS = ['1st Year', '2nd Year', '3rd Year', '4th Year', 'Postgraduate']
 
-const SKILLS = [
-  'Frontend',
-  'Backend',
-  'Mobile',
-  'AI / ML',
-  'Data Science',
-  'UI / UX',
-  'DevOps',
-  'Blockchain',
-  'Cybersecurity',
-  'Embedded / IoT',
-  'Pitching / Business',
-]
-
 const LEVELS = ['Fluent', 'Professional', 'Intermediate', 'Basic']
 
 const initialLanguages = [{ language: 'English', level: 'Fluent' }]
@@ -43,13 +29,10 @@ export default function RegistrationForm({ onSuccess }) {
   const [year, setYear] = useState('')
   const [experience, setExperience] = useState('')
   const [experienceOther, setExperienceOther] = useState('')
-  const [skills, setSkills] = useState([])
+  const [expertise, setExpertise] = useState('')
   const [languages, setLanguages] = useState(initialLanguages)
   const [status, setStatus] = useState(null)
   const [sending, setSending] = useState(false)
-
-  const toggleSkill = (skill) =>
-    setSkills((prev) => (prev.includes(skill) ? prev.filter((s) => s !== skill) : [...prev, skill]))
 
   const addLanguage = () => setLanguages((prev) => [...prev, { language: '', level: 'Fluent' }])
   const removeLanguage = (idx) =>
@@ -81,8 +64,8 @@ export default function RegistrationForm({ onSuccess }) {
       showStatus('Enter a valid phone number.', false)
       return
     }
-    if (skills.length === 0) {
-      showStatus('Pick at least one expertise area. Nobody has zero skills.', false)
+    if (!expertise.trim()) {
+      showStatus('Tell us your expertise. Nobody has zero skills.', false)
       return
     }
     const cleanLanguages = languages
@@ -101,7 +84,7 @@ export default function RegistrationForm({ onSuccess }) {
       department: trimmedDept,
       year,
       hackathonExperience: expIsNumber ? Number(expRaw) : expRaw,
-      expertise: skills,
+      expertise: expertise.trim(),
       languages: cleanLanguages,
       submittedAt: new Date().toISOString(),
     }
@@ -143,7 +126,7 @@ export default function RegistrationForm({ onSuccess }) {
           <div className="grid">
             <div className="field">
               <label>Full Name<span className="req">*</span></label>
-              <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Rutuj Dhodapkar" required />
+              <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Full Name" required />
             </div>
             <div className="field">
               <label>Gender<span className="req">*</span></label>
@@ -230,15 +213,15 @@ export default function RegistrationForm({ onSuccess }) {
             <div className="section-title">Expertise</div>
             <div className="section-hint">Where you actually contribute</div>
           </div>
-          <label>Pick every area that fits — no modesty</label>
-          <div className="skills-tags">
-            {SKILLS.map((s) => (
-              <div key={s} className={'skill-chip' + (skills.includes(s) ? ' on' : '')} onClick={() => toggleSkill(s)}>
-                {s}
-              </div>
-            ))}
-          </div>
-          <div className="req-note">At least one, or this section flags on submit.</div>
+          <label>Tell us what you bring — no modesty</label>
+          <input
+            type="text"
+            value={expertise}
+            onChange={(e) => setExpertise(e.target.value)}
+            placeholder="e.g. Full-stack dev, worked on two hackathon projects"
+            required
+          />
+          <div className="req-note">A few words or a full list — your call.</div>
         </div>
 
         <div className="section">
