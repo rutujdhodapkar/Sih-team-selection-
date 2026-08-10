@@ -27,6 +27,7 @@ export default function RegistrationForm({ onSuccess }) {
   const [department, setDepartment] = useState('')
   const [departmentOther, setDepartmentOther] = useState('')
   const [year, setYear] = useState('')
+  const [cgpa, setCgpa] = useState('')
   const [experience, setExperience] = useState('')
   const [experienceOther, setExperienceOther] = useState('')
   const [expertise, setExpertise] = useState('')
@@ -83,6 +84,7 @@ export default function RegistrationForm({ onSuccess }) {
       contact: { email: trimmedEmail, phone: trimmedPhone },
       department: trimmedDept,
       year,
+      cgpa: cgpa.trim() ? parseFloat(cgpa) : null,
       hackathonExperience: expIsNumber ? Number(expRaw) : expRaw,
       expertise: expertise.trim(),
       languages: cleanLanguages,
@@ -173,6 +175,16 @@ export default function RegistrationForm({ onSuccess }) {
                   <option key={y}>{y}</option>
                 ))}
               </select>
+            </div>
+            <div className="field">
+              <label>CGPA<span className="opt">(optional)</span></label>
+              <input
+                type="text"
+                inputMode="decimal"
+                value={cgpa}
+                onChange={(e) => setCgpa(e.target.value)}
+                placeholder="e.g. 8.5"
+              />
             </div>
           </div>
         </div>

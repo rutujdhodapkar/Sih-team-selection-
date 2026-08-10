@@ -122,6 +122,7 @@ export default function AdminPanel() {
                 <th>Phone</th>
                 <th>Department</th>
                 <th>Year</th>
+                <th>CGPA</th>
                 <th>Hackathon Exp</th>
                 <th>Expertise</th>
                 <th>Languages</th>
@@ -138,6 +139,7 @@ export default function AdminPanel() {
                   <td>{r.contact?.phone || '—'}</td>
                   <td>{r.department || '—'}</td>
                   <td>{r.year || '—'}</td>
+                  <td>{r.cgpa != null ? r.cgpa : '—'}</td>
                   <td>{r.hackathonExperience ?? '—'}</td>
                   <td>{r.expertise || '—'}</td>
                   <td>
