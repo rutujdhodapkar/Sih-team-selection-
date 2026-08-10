@@ -35,6 +35,7 @@ export default function AdminPanel() {
         ? Object.entries(data).map(([id, record]) => ({ id, ...record }))
         : []
       setRecords(list)
+      setRejected(new Set(list.filter((r) => r.rejected === true).map((r) => r.id)))
     } catch (err) {
       setError('Could not load data — ' + err.message)
     } finally {
@@ -42,13 +43,31 @@ export default function AdminPanel() {
     }
   }
 
-  const toggleReject = (id) => {
+  const toggleReject = async (id) => {
+    const wasRejected = rejected.has(id)
+    const nowRejected = !wasRejected
     setRejected((prev) => {
       const next = new Set(prev)
-      if (next.has(id)) next.delete(id)
-      else next.add(id)
+      if (nowRejected) next.add(id)
+      else next.delete(id)
       return next
     })
+    try {
+      const res = await fetch(`${DB_URL}/sih-team-selection/${id}.json`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rejected: nowRejected }),
+      })
+      if (!res.ok) throw new Error(`Database rejected the write (HTTP ${res.status}).`)
+    } catch (err) {
+      setError('Could not save rejection — ' + err.message)
+      setRejected((prev) => {
+        const next = new Set(prev)
+        if (wasRejected) next.add(id)
+        else next.delete(id)
+        return next
+      })
+    }
   }
 
   const visibleRecords = records === null
