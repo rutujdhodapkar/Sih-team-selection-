@@ -45,7 +45,7 @@ export default function App() {
                   </p>
                   <div className="badge-row">
                     <div className="badge">STATUS <b>RECRUITING</b></div>
-                    <div className="badge hot">OPEN <b>2 SLOTS</b></div>
+                    <div className="badge hot">OPEN <b>SLOTS</b></div>
                     <div className="badge">TIME <b>~2 MIN</b></div>
                   </div>
                 </header>
@@ -56,7 +56,7 @@ export default function App() {
                     <div className="section-title">About Team Tech Apes — SIH Selections</div>
                   </div>
                   <p className="about-text">
-                    Team Tech Apes is conducting selections for <b style={{ color: 'var(--ink)' }}>2 positions</b> in our SIH team.
+                    Team Tech Apes is conducting selections in our SIH team.
                     We are looking for students who are enthusiastic about participation, proficient in{' '}
                     <b style={{ color: 'var(--ink)' }}>Frontend Development</b> or <b style={{ color: 'var(--ink)' }}>UI/UX Design</b>,
                     and possess strong <b style={{ color: 'var(--ink)' }}>communication and presentation</b> abilities.
