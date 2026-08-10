@@ -11,6 +11,8 @@ export default function AdminPanel() {
   const [error, setError] = useState('')
   const [records, setRecords] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [rejected, setRejected] = useState(() => new Set())
+  const [hideRejected, setHideRejected] = useState(true)
 
   const handleLogin = (e) => {
     e.preventDefault()
@@ -39,6 +41,21 @@ export default function AdminPanel() {
       setLoading(false)
     }
   }
+
+  const toggleReject = (id) => {
+    setRejected((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
+
+  const visibleRecords = records === null
+    ? null
+    : hideRejected
+      ? records.filter((r) => !rejected.has(r.id))
+      : records
 
   if (!authed) {
     return (
@@ -82,10 +99,17 @@ export default function AdminPanel() {
           <p style={{ color: 'var(--dim)', fontSize: 13, margin: 0 }}>
             {records === null || loading
               ? 'Loading entries…'
-              : `${records.length} submission${records.length === 1 ? '' : 's'} in the database.`}
+              : `${visibleRecords.length} of ${records.length} submission${records.length === 1 ? '' : 's'} shown.`}
           </p>
         </div>
-        <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
+          <label className="filter-label">
+            <input
+              type="checkbox"
+              checked={hideRejected}
+              onChange={(e) => setHideRejected(e.target.checked)}
+            /> Hide rejected
+          </label>
           <button className="btn-ghost" onClick={loadData} style={{ cursor: 'pointer' }}>↻ Refresh</button>
           <button
             className="btn-ghost"
@@ -106,11 +130,13 @@ export default function AdminPanel() {
 
       {loading && <div className="status ok" style={{ display: 'block', marginTop: 16 }}>Fetching from Firebase…</div>}
 
-      {!loading && records !== null && records.length === 0 && (
-        <div className="status ok" style={{ display: 'block', marginTop: 16 }}>No submissions yet.</div>
+      {!loading && records !== null && visibleRecords.length === 0 && (
+        <div className="status ok" style={{ display: 'block', marginTop: 16 }}>
+          {records.length === 0 ? 'No submissions yet.' : 'No submissions to show — all filtered out.'}
+        </div>
       )}
 
-      {records !== null && records.length > 0 && (
+      {records !== null && visibleRecords.length > 0 && (
         <div className="table-scroll">
           <table className="admin-table">
             <thead>
@@ -127,11 +153,12 @@ export default function AdminPanel() {
                 <th>Expertise</th>
                 <th>Languages</th>
                 <th>Submitted At</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
-              {records.map((r, i) => (
-                <tr key={r.id}>
+              {visibleRecords.map((r, i) => (
+                <tr key={r.id} className={rejected.has(r.id) ? 'rejected' : ''}>
                   <td>{i + 1}</td>
                   <td>{r.name || '—'}</td>
                   <td>{r.gender || '—'}</td>
@@ -148,6 +175,15 @@ export default function AdminPanel() {
                       : '—'}
                   </td>
                   <td>{r.submittedAt ? new Date(r.submittedAt).toLocaleString() : '—'}</td>
+                  <td>
+                    <button
+                      type="button"
+                      className={'reject-btn' + (rejected.has(r.id) ? ' rejected' : '')}
+                      onClick={() => toggleReject(r.id)}
+                    >
+                      {rejected.has(r.id) ? 'Unreject' : 'Reject'}
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
