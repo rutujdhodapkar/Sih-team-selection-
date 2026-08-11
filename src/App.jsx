@@ -17,7 +17,6 @@ export default function App() {
 
   return (
     <>
-      <div className="scan"></div>
       <div className="wrap">
         <div className="topline">
           <span>SMART INDIA HACKATHON <span className="blink">●</span> TEAM-BUILD 2026</span>
