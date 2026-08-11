@@ -3,6 +3,7 @@ import { Link, Route, Routes } from 'react-router-dom'
 import RegistrationForm from './components/RegistrationForm.jsx'
 import SuccessScreen from './components/SuccessScreen.jsx'
 import AdminPanel from './components/AdminPanel.jsx'
+import { trackVisit } from './utils/visitTracker.js'
 
 export default function App() {
   const [time, setTime] = useState('00:00:00')
@@ -13,6 +14,10 @@ export default function App() {
     tick()
     const id = setInterval(tick, 1000)
     return () => clearInterval(id)
+  }, [])
+
+  useEffect(() => {
+    trackVisit()
   }, [])
 
   return (
